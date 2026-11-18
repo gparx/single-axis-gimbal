@@ -1,76 +1,409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Single-Axis Gimbal Stabilizer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Single-Axis Active Gimbal Stabilization System</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      max-width: 850px;
-      margin: 40px auto;
-      padding: 0 20px;
-      line-height: 1.7;
-      color: #222;
+      color: #f4f7fb;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(0, 183, 255, 0.18), transparent 25%),
+        radial-gradient(circle at 85% 15%, rgba(147, 51, 234, 0.18), transparent 25%),
+        radial-gradient(circle at 75% 80%, rgba(0, 255, 170, 0.12), transparent 25%),
+        linear-gradient(135deg, #08111f 0%, #0d1628 45%, #05080f 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-    h1, h2 { color: #193c60; }
-    hr { border: 0; border-top: 1px solid #ddd; }
+
+    .background-blur {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .orb1 {
+      width: 250px;
+      height: 250px;
+      background: #00b7ff;
+      top: 8%;
+      left: 6%;
+    }
+
+    .orb2 {
+      width: 300px;
+      height: 300px;
+      background: #7c3aed;
+      top: 20%;
+      right: 5%;
+      animation-delay: 2s;
+    }
+
+    .orb3 {
+      width: 220px;
+      height: 220px;
+      background: #00ffaa;
+      bottom: 5%;
+      left: 35%;
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) translateX(0px) scale(1);
+      }
+      50% {
+        transform: translateY(-20px) translateX(10px) scale(1.06);
+      }
+    }
+
+    .container {
+      width: min(1000px, 92%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      padding: 80px 0 50px;
+      text-align: center;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      color: #cfe9ff;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+      max-width: 760px;
+      margin: 0 auto 30px;
+      font-size: 1.08rem;
+      color: #c8d7ea;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .btn {
+      text-decoration: none;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      transition: 0.25s ease;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.14);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #00b7ff, #7c3aed);
+      border: none;
+    }
+
+    section {
+      margin: 22px 0;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    p {
+      color: #d5e0ec;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    ul {
+      padding-left: 20px;
+      color: #d5e0ec;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .highlight {
+      color: #8ee9ff;
+      font-weight: bold;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .status-box {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(0, 255, 170, 0.14);
+      border: 1px solid rgba(0, 255, 170, 0.28);
+      color: #aef7dc;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 35px 0 50px;
+      color: #9eb0c4;
+      font-size: 0.95rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+      margin: 18px 0 10px;
+    }
+
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #b9ecff;
+    }
   </style>
 </head>
 <body>
+  <div class="background-blur">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
 
-<h1>Single-Axis Active Gimbal Stabilization System</h1>
-<p><strong>Mechatronics I | Fall 2026</strong></p>
-<p><strong>Status:</strong> In Development</p>
-<hr>
+  <div class="container">
+    <header>
+      <div class="tag">MECHATRONICS I · FALL 2026 · FINAL PROJECT</div>
+      <h1>Single-Axis Active Gimbal<br>Stabilization System</h1>
+      <p class="hero-subtitle">
+        An Arduino-based aerospace-inspired stabilization platform using an
+        <span class="highlight">MPU-6050 IMU</span> and an
+        <span class="highlight">SG90 servo motor</span> to maintain orientation while the base is tilted.
+      </p>
+      <div class="hero-buttons">
+        <a class="btn primary" href="#overview">Explore Project</a>
+        <a class="btn" href="#results">Results</a>
+      </div>
+    </header>
 
-<h2>Project Overview</h2>
-<p>
-This project focuses on designing a single-axis active
-stabilization platform using an Arduino UNO, MPU-6050
-inertial measurement unit (IMU), and servo motor.
-The objective is to maintain the platform's orientation
-while its supporting structure is tilted.
-</p>
+    <section id="overview">
+      <div class="card">
+        <h2>Project Overview</h2>
+        <p>
+          This project explores the design and development of a
+          <span class="highlight">single-axis gimbal stabilizer</span>.
+          The goal is to create a compact physical platform that senses angular motion
+          and automatically corrects it through active feedback control.
+        </p>
+        <p>
+          The concept is inspired by aerospace instrument stabilization and control systems,
+          where payloads or sensors must remain properly oriented even when the supporting
+          structure experiences motion or disturbance.
+        </p>
+        <div class="status-box">Status: In Development</div>
+      </div>
+    </section>
 
-<h2>Project Objectives</h2>
-<ul>
-  <li>Measure platform orientation using an IMU.</li>
-  <li>Develop an Arduino feedback control algorithm.</li>
-  <li>Actuate a servo to correct angular displacement.</li>
-  <li>Evaluate stabilization accuracy and response.</li>
-</ul>
+    <section>
+      <div class="grid">
+        <div class="card">
+          <h2>Objectives</h2>
+          <ul>
+            <li>Measure platform orientation using the MPU-6050 IMU.</li>
+            <li>Develop an Arduino-based control algorithm.</li>
+            <li>Actuate a servo motor to reduce angular error.</li>
+            <li>Evaluate stabilization accuracy and response behavior.</li>
+          </ul>
+        </div>
 
-<h2>Materials</h2>
-<ul>
-  <li>Arduino UNO R3</li>
-  <li>MPU-6050 (GY-521)</li>
-  <li>SG90 Servo Motor</li>
-  <li>Breadboard and jumper wires</li>
-  <li>Cardboard </li>
-</ul>
+        <div class="card">
+          <h2>Minimum Viable Project</h2>
+          <p>
+            Build a working one-axis stabilization platform that keeps a small mounted
+            surface approximately level while its base is manually tilted.
+          </p>
+          <div class="divider"></div>
+          <p>
+            The system must include:
+          </p>
+          <ul>
+            <li>A real sensor input</li>
+            <li>A physical actuator output</li>
+            <li>An original feedback control algorithm</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-<h2>Minimum Viable Project (MVP)</h2>
-<p>
-Construct a functional one-axis platform that uses
-sensor feedback to maintain a level orientation.
-</p>
+    <section>
+      <div class="card">
+        <h2>Materials</h2>
+        <div class="grid">
+          <div class="mini-card">
+            <h3>Electronics</h3>
+            <ul>
+              <li>Arduino UNO R3</li>
+              <li>MPU-6050 (GY-521)</li>
+              <li>SG90 Servo Motor</li>
+              <li>Breadboard</li>
+              <li>Jumper wires</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h3>Structure</h3>
+            <ul>
+              <li>Cardboard platform</li>
+              <li>Cardboard base support</li>
+              <li>Adhesive / tape / glue</li>
+              <li>Servo horn and screws</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h3>Software</h3>
+            <ul>
+              <li>Arduino IDE</li>
+              <li>Sensor reading code</li>
+              <li>Feedback control algorithm</li>
+              <li>Serial monitor / plotter</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<h2>Bonus Objectives</h2>
-<ul>
-  <li>Accelerometer/gyroscope sensor fusion</li>
-  <li>PD or PID feedback control</li>
-  <li>Real-time telemetry and performance analysis</li>
-</ul>
+    <section>
+      <div class="grid">
+        <div class="card">
+          <h2>Control Strategy</h2>
+          <p>
+            The IMU measures the platform’s angular orientation. The Arduino compares the
+            measured angle to the desired level orientation and commands the servo to reduce
+            the error.
+          </p>
+          <p>
+            Initial development will use a simple proportional response. Future versions may
+            use a <span class="highlight">complementary filter</span> and
+            <span class="highlight">PD/PID control</span> for improved stability.
+          </p>
+        </div>
 
-<h2>Design and Construction</h2>
-<p>Documentation and photos will be added.</p>
+        <div class="card">
+          <h2>Bonus Objectives</h2>
+          <ul>
+            <li>Accelerometer + gyroscope sensor fusion</li>
+            <li>PD or PID feedback control</li>
+            <li>Performance testing and error analysis</li>
+            <li>Telemetry visualization using Serial Plotter</li>
+            <li>Optional manual/automatic mode switching</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-<h2>Testing and Results</h2>
-<p>Experimental results will be added.</p>
+    <section id="results">
+      <div class="card">
+        <h2>Design, Testing, and Results</h2>
+        <p>
+          This section will be updated with photos of the build, wiring diagrams,
+          Arduino code, testing procedures, and measured stabilization performance.
+        </p>
+        <p>
+          Planned metrics include:
+        </p>
+        <ul>
+          <li>Angular error</li>
+          <li>Settling time</li>
+          <li>Response smoothness</li>
+          <li>Servo behavior under disturbance</li>
+        </ul>
+      </div>
+    </section>
 
-<h2>Final Demonstration</h2>
-<p>Video demonstration coming soon.</p>
+    <section>
+      <div class="card">
+        <h2>Final Demonstration</h2>
+        <p>
+          A final video demonstration will be added here showing the gimbal platform
+          responding to manual base disturbances in real time.
+        </p>
+        <p>
+          Repository structure can remain extremely simple:
+          <code>index.html</code> + optional images/videos later.
+        </p>
+      </div>
+    </section>
 
+    <footer>
+      <p>Created for Mechatronics I Final Project · Aerospace-Inspired Embedded Control System</p>
+    </footer>
+  </div>
 </body>
 </html>
