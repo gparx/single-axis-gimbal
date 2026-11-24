@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -232,6 +233,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="background-blur">
     <div class="orb orb1"></div>
@@ -240,16 +242,20 @@
   </div>
 
   <div class="container">
+
     <header>
       <div class="tag">MECHATRONICS I · FALL 2026 · FINAL PROJECT</div>
       <h1>Single-Axis Active Gimbal<br>Stabilization System</h1>
+
       <p class="hero-subtitle">
         An Arduino-based aerospace-inspired stabilization platform using an
         <span class="highlight">MPU-6050 IMU</span> and an
         <span class="highlight">SG90 servo motor</span> to maintain orientation while the base is tilted.
       </p>
+
       <div class="hero-buttons">
         <a class="btn primary" href="#overview">Explore Project</a>
+        <a class="btn" href="#schedule">Schedule</a>
         <a class="btn" href="#results">Results</a>
       </div>
     </header>
@@ -257,23 +263,27 @@
     <section id="overview">
       <div class="card">
         <h2>Project Overview</h2>
+
         <p>
           This project explores the design and development of a
           <span class="highlight">single-axis gimbal stabilizer</span>.
           The goal is to create a compact physical platform that senses angular motion
           and automatically corrects it through active feedback control.
         </p>
+
         <p>
           The concept is inspired by aerospace instrument stabilization and control systems,
           where payloads or sensors must remain properly oriented even when the supporting
           structure experiences motion or disturbance.
         </p>
+
         <div class="status-box">Status: In Development</div>
       </div>
     </section>
 
     <section>
       <div class="grid">
+
         <div class="card">
           <h2>Objectives</h2>
           <ul>
@@ -290,23 +300,27 @@
             Build a working one-axis stabilization platform that keeps a small mounted
             surface approximately level while its base is manually tilted.
           </p>
+
           <div class="divider"></div>
-          <p>
-            The system must include:
-          </p>
+
+          <p>The system must include:</p>
+
           <ul>
             <li>A real sensor input</li>
             <li>A physical actuator output</li>
             <li>An original feedback control algorithm</li>
           </ul>
         </div>
+
       </div>
     </section>
 
     <section>
       <div class="card">
         <h2>Materials</h2>
+
         <div class="grid">
+
           <div class="mini-card">
             <h3>Electronics</h3>
             <ul>
@@ -317,6 +331,7 @@
               <li>Jumper wires</li>
             </ul>
           </div>
+
           <div class="mini-card">
             <h3>Structure</h3>
             <ul>
@@ -326,6 +341,7 @@
               <li>Servo horn and screws</li>
             </ul>
           </div>
+
           <div class="mini-card">
             <h3>Software</h3>
             <ul>
@@ -335,19 +351,23 @@
               <li>Serial monitor / plotter</li>
             </ul>
           </div>
+
         </div>
       </div>
     </section>
 
     <section>
       <div class="grid">
+
         <div class="card">
           <h2>Control Strategy</h2>
+
           <p>
             The IMU measures the platform’s angular orientation. The Arduino compares the
             measured angle to the desired level orientation and commands the servo to reduce
             the error.
           </p>
+
           <p>
             Initial development will use a simple proportional response. Future versions may
             use a <span class="highlight">complementary filter</span> and
@@ -357,6 +377,7 @@
 
         <div class="card">
           <h2>Bonus Objectives</h2>
+
           <ul>
             <li>Accelerometer + gyroscope sensor fusion</li>
             <li>PD or PID feedback control</li>
@@ -365,45 +386,214 @@
             <li>Optional manual/automatic mode switching</li>
           </ul>
         </div>
+
       </div>
     </section>
 
+    <!-- PROJECT SCHEDULE -->
+
+    <section id="schedule">
+      <div class="card">
+
+        <h2>Project Schedule</h2>
+
+        <p>
+          Planned milestones for the development and testing
+          of the single-axis stabilization system.
+        </p>
+
+        <div class="grid">
+
+          <div class="mini-card">
+            <h3 class="highlight">November 18</h3>
+            <h3>Project Proposal</h3>
+
+            <div class="divider"></div>
+
+            <ul>
+              <li>Establish project objectives.</li>
+              <li>Identify required components.</li>
+              <li>Define the minimum viable project.</li>
+              <li>Establish a preliminary control strategy.</li>
+            </ul>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">November 23</h3>
+            <h3>Check-in 1</h3>
+
+            <div class="divider"></div>
+
+            <ul>
+              <li>Research existing active gimbal stabilization systems.</li>
+              <li>Establish circuit connections.</li>
+              <li>Independently test the MPU-6050 IMU.</li>
+              <li>Independently test the SG90 servo motor.</li>
+              <li>Evaluate initial progress and potential design changes.</li>
+            </ul>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">November 30</h3>
+            <h3>Check-in 2</h3>
+
+            <div class="divider"></div>
+
+            <ul>
+              <li>Construct the physical gimbal assembly.</li>
+              <li>Integrate the sensor and actuator.</li>
+              <li>Implement proportional feedback control.</li>
+              <li>Demonstrate preliminary active stabilization.</li>
+              <li>Evaluate performance and establish a final development plan.</li>
+            </ul>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">December 6</h3>
+            <h3>Final Submission</h3>
+
+            <div class="divider"></div>
+
+            <ul>
+              <li>Refine and validate the control algorithm.</li>
+              <li>Evaluate angular error and response behavior.</li>
+              <li>Finalize circuit diagrams and Arduino documentation.</li>
+              <li>Record the final demonstration video.</li>
+              <li>Complete the project website.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- RISK EVALUATION -->
+
+    <section id="risks">
+      <div class="card">
+
+        <h2>Risk Evaluation &amp; Mitigation</h2>
+
+        <p>
+          Potential challenges associated with the development,
+          integration, and testing of the stabilization system.
+        </p>
+
+        <div class="grid">
+
+          <div class="mini-card">
+            <h3 class="highlight">Sensor Noise and Drift</h3>
+            <p>
+              Inaccurate orientation measurements may reduce
+              stabilization accuracy.
+            </p>
+            <p>
+              <strong>Mitigation:</strong> Calibrate the IMU and
+              implement complementary filtering if necessary.
+            </p>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">Servo Oscillation</h3>
+            <p>
+              Excessive controller gain may produce oscillations
+              or unstable platform behavior.
+            </p>
+            <p>
+              <strong>Mitigation:</strong> Adjust proportional gain
+              and implement an angular deadband if necessary.
+            </p>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">Structural Instability</h3>
+            <p>
+              The lightweight cardboard structure may introduce
+              unwanted movement or mechanical deformation.
+            </p>
+            <p>
+              <strong>Mitigation:</strong> Reinforce the platform
+              and servo mounting points.
+            </p>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">Power Instability</h3>
+            <p>
+              Servo current demand may cause voltage fluctuations
+              or unexpected Arduino resets.
+            </p>
+            <p>
+              <strong>Mitigation:</strong> Ensure adequate servo
+              power and a common electrical ground.
+            </p>
+          </div>
+
+          <div class="mini-card">
+            <h3 class="highlight">Limited Development Time</h3>
+            <p>
+              Advanced control algorithms may require more
+              development and testing than anticipated.
+            </p>
+            <p>
+              <strong>Mitigation:</strong> Prioritize a functional
+              minimum viable project before pursuing advanced
+              control algorithms and stretch goals.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN AND TESTING -->
+
     <section id="results">
       <div class="card">
+
         <h2>Design, Testing, and Results</h2>
+
         <p>
           This section will be updated with photos of the build, wiring diagrams,
           Arduino code, testing procedures, and measured stabilization performance.
         </p>
-        <p>
-          Planned metrics include:
-        </p>
+
+        <p>Planned metrics include:</p>
+
         <ul>
           <li>Angular error</li>
           <li>Settling time</li>
           <li>Response smoothness</li>
           <li>Servo behavior under disturbance</li>
         </ul>
+
       </div>
     </section>
 
     <section>
       <div class="card">
+
         <h2>Final Demonstration</h2>
+
         <p>
           A final video demonstration will be added here showing the gimbal platform
           responding to manual base disturbances in real time.
         </p>
+
         <p>
           Repository structure can remain extremely simple:
           <code>index.html</code> + optional images/videos later.
         </p>
+
       </div>
     </section>
 
     <footer>
-      <p>Created for Mechatronics I Final Project · Aerospace-Inspired Embedded Control System</p>
+      <p>
+        Created for Mechatronics I Final Project · Aerospace-Inspired Embedded Control System
+      </p>
     </footer>
+
   </div>
 </body>
 </html>
